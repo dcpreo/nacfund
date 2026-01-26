@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArtMedia Agency | Interactive Strategy Overview</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap');
+
+        :root {
+            --bg-warm: #F9F8F6;
+            --text-primary: #2C2A29;
+            --accent-gold: #C5A065;
+            --accent-soft: #E5E2DD;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-warm);
+            color: var(--text-primary);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Chart Container */
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 450px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .chart-wrapper {
+                height: 300px;
+                max-height: 350px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C5A065;
+            border-radius: 4px;
+        }
+
+        /* Tabs */
+        .tab-active {
+            border-bottom: 2px solid var(--accent-gold);
+            color: var(--text-primary);
+            font-weight: 700;
+        }
+        .tab-inactive {
+            color: #888;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-inactive:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .slide-in-left {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .slide-in-right {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+        }
+
+        /* Staggered animation delays */
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            margin: 20px;
+            border-radius: 4px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 40;
+            animation: slideInLeft 0.3s ease-out;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        /* Timeline */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 0;
+            bottom: -20px;
+            width: 2px;
+            background: #E5E2DD;
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #C5A065;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #C5A065;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Focus indicators for accessibility */
+        *:focus {
+            outline: 2px solid #C5A065;
+            outline-offset: 2px;
+        }
+
+        button:focus, a:focus {
+            outline: 2px solid #C5A065;
+            outline-offset: 2px;
+        }
+
+        /* Form styles */
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-family: 'Lato', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: #C5A065;
+            outline: none;
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+
+        /* Loading state */
+        .btn-loading {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Map markers */
+        .map-marker {
+            width: 12px;
+            height: 12px;
+            background: #C5A065;
+            border-radius: 50%;
+            position: absolute;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-stone-200 selection:text-black">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-[#F9F8F6]/95 backdrop-blur-sm border-b border-stone-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold tracking-widest uppercase" style="font-family: 'Cinzel', serif;">ArtMedia<span class="text-[#C5A065]">.</span></span>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('mission')" class="text-sm uppercase tracking-wider hover:text-[#C5A065] transition" aria-label="Navigate to mission section">Mission</button>
+                    <button onclick="scrollToSection('dashboard')" class="text-sm uppercase tracking-wider hover:text-[#C5A065] transition" aria-label="Navigate to services section">Services</button>
+                    <button onclick="scrollToSection('timeline')" class="text-sm uppercase tracking-wider hover:text-[#C5A065] transition" aria-label="Navigate to timeline section">Timeline</button>
+                    <button onclick="scrollToSection('structure')" class="text-sm uppercase tracking-wider hover:text-[#C5A065] transition" aria-label="Navigate to structure section">Structure</button>
+                    <button onclick="scrollToSection('clientele')" class="text-sm uppercase tracking-wider hover:text-[#C5A065] transition" aria-label="Navigate to clientele section">Clientele</button>
+                    <button onclick="scrollToSection('contact')" class="text-sm uppercase tracking-wider hover:text-[#C5A065] transition" aria-label="Navigate to contact section">Contact</button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu" aria-expanded="false">
+                    <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu">
+            <div class="px-4 py-4 space-y-3">
+                <button onclick="scrollToSection('mission'); closeMobileMenu();" class="block w-full text-left text-sm uppercase tracking-wider hover:text-[#C5A065] transition py-2">Mission</button>
+                <button onclick="scrollToSection('dashboard'); closeMobileMenu();" class="block w-full text-left text-sm uppercase tracking-wider hover:text-[#C5A065] transition py-2">Services</button>
+                <button onclick="scrollToSection('timeline'); closeMobileMenu();" class="block w-full text-left text-sm uppercase tracking-wider hover:text-[#C5A065] transition py-2">Timeline</button>
+                <button onclick="scrollToSection('structure'); closeMobileMenu();" class="block w-full text-left text-sm uppercase tracking-wider hover:text-[#C5A065] transition py-2">Structure</button>
+                <button onclick="scrollToSection('clientele'); closeMobileMenu();" class="block w-full text-left text-sm uppercase tracking-wider hover:text-[#C5A065] transition py-2">Clientele</button>
+                <button onclick="scrollToSection('contact'); closeMobileMenu();" class="block w-full text-left text-sm uppercase tracking-wider hover:text-[#C5A065] transition py-2">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="mission" class="pt-20 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl text-[#2C2A29] mb-6 animate-on-scroll fade-in-up">Your Broker in The World of <span class="text-[#C5A065] italic">Fine Art</span></h1>
+            <p class="text-lg sm:text-xl text-stone-600 mb-8 leading-relaxed animate-on-scroll fade-in-up stagger-1">
+                Connecting Russian and international collectors, artists, and institutions with unparalleled expertise and discretion.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mt-12 bg-white p-8 rounded-sm shadow-sm border border-stone-100 animate-on-scroll fade-in-up stagger-2">
+                <div>
+                    <h3 class="text-lg font-bold mb-2 uppercase tracking-wide text-[#C5A065]">Our Mission</h3>
+                    <p class="text-stone-700">To be the most trusted and results-driven fine art brokerage and media consultancy in Moscow.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-2 uppercase tracking-wide text-[#C5A065]">Our Vision</h3>
+                    <p class="text-stone-700">To democratize access to high-value fine art investments while elevating the profiles of exceptional artists on the global stage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Pillars Dashboard -->
+    <section id="dashboard" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="mb-10 text-center animate-on-scroll fade-in-up">
+                <h2 class="text-3xl font-serif text-[#2C2A29] mb-4">Core Identity & Value Proposition</h2>
+                <p class="max-w-2xl mx-auto text-stone-500">Explore our three pillars of service. ArtMedia is not just a gallery; we are strategic brokers offering market knowledge and fiduciary duty.</p>
+            </div>
+
+            <!-- Dashboard Controls -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8 border-b border-stone-200 pb-1 animate-on-scroll fade-in-up stagger-1" role="tablist">
+                <button onclick="updateDashboard('brokerage')" id="btn-brokerage" class="tab-active text-lg px-6 py-2 transition-all duration-300" role="tab" aria-selected="true" aria-controls="dashboard-content">
+                    I. Fine Art Brokerage
+                </button>
+                <button onclick="updateDashboard('media')" id="btn-media" class="tab-inactive text-lg px-6 py-2 transition-all duration-300" role="tab" aria-selected="false" aria-controls="dashboard-content">
+                    II. Media & Relations
+                </button>
+                <button onclick="updateDashboard('curation')" id="btn-curation" class="tab-inactive text-lg px-6 py-2 transition-all duration-300" role="tab" aria-selected="false" aria-controls="dashboard-content">
+                    III. Curation & Logistics
+                </button>
+            </div>
+
+            <!-- Dynamic Content Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start" id="dashboard-content" role="tabpanel">
+                
+                <!-- Left: Textual Context -->
+                <div class="lg:col-span-1 space-y-6 animate-on-scroll slide-in-left stagger-2">
+                    <h3 id="dash-title" class="text-2xl font-serif text-[#2C2A29]">Fine Art Brokerage</h3>
+                    <div id="dash-desc" class="text-stone-700 leading-relaxed space-y-4">
+                        <p>Focuses on acquisition, deaccessioning, private sales, and investment advisory.</p>
+                        <p><strong>Past Project Success:</strong> Successful high-net-worth acquisitions of established masters and securing discreet sales of private collections.</p>
+                    </div>
+                    <div class="bg-[#F9F8F6] p-6 border-l-4 border-[#C5A065]">
+                        <h4 class="font-bold text-sm uppercase tracking-wide mb-2 text-stone-500">Key Responsibilities</h4>
+                        <ul id="dash-list" class="list-disc pl-5 space-y-2 text-stone-800">
+                            <li>Market Analysis & Asset Valuation</li>
+                            <li>Collector Relations</li>
+                            <li>Managing Private Transactions</li>
+                            <li>Legal Compliance (Title, Provenance)</li>
+                        </ul>
+                    </div>
+                    <button onclick="openCaseStudy()" id="case-study-btn" class="w-full bg-[#C5A065] text-white py-3 px-6 rounded hover:bg-[#B08F54] transition-all duration-300 font-bold uppercase text-sm tracking-wider" aria-label="View detailed case study">
+                        View Full Case Study →
+                    </button>
+                </div>
+
+                <!-- Right: Visualization -->
+                <div class="lg:col-span-2 animate-on-scroll slide-in-right stagger-3">
+                    <div class="bg-[#F9F8F6] p-4 rounded-sm border border-stone-100">
+                        <h4 id="chart-title" class="text-center text-sm uppercase tracking-widest mb-4 text-stone-500">Portfolio Performance Case Study</h4>
+                        <div class="chart-wrapper">
+                            <canvas id="mainChart" role="img" aria-label="Interactive chart showing portfolio performance data"></canvas>
+                        </div>
+                        <p id="chart-caption" class="text-center text-xs text-stone-400 mt-4 italic">
+                            Representative data based on past high-net-worth acquisition projects.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="py-16 bg-[#F9F8F6]">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center animate-on-scroll fade-in-up">
+                <h2 class="text-3xl font-serif text-[#2C2A29] mb-4">Our Journey</h2>
+                <p class="text-stone-500 max-w-2xl mx-auto">Key milestones in ArtMedia's evolution from startup to Moscow's premier art services agency.</p>
+            </div>
+
+            <div class="space-y-8">
+                <!-- Timeline Item 1 -->
+                <div class="timeline-item relative pl-20 animate-on-scroll fade-in-up stagger-1">
+                    <div class="absolute left-0 top-0">
+                        <div class="timeline-dot">1</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-sm shadow-sm">
+                        <div class="text-sm text-[#C5A065] font-bold mb-1">2020</div>
+                        <h4 class="font-bold text-lg mb-2">Foundation & Early Acquisitions</h4>
+                        <p class="text-stone-600 text-sm">Established core brokerage operations. Secured first high-net-worth clients and facilitated acquisitions of Russian avant-garde works totaling €2.5M.</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 2 -->
+                <div class="timeline-item relative pl-20 animate-on-scroll fade-in-up stagger-2">
+                    <div class="absolute left-0 top-0">
+                        <div class="timeline-dot">2</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-sm shadow-sm">
+                        <div class="text-sm text-[#C5A065] font-bold mb-1">2021</div>
+                        <h4 class="font-bold text-lg mb-2">Media Department Launch</h4>
+                        <p class="text-stone-600 text-sm">Expanded into artist representation and PR services. Successfully launched 3 emerging artists internationally with coverage in The Art Newspaper and Artnet.</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 3 -->
+                <div class="timeline-item relative pl-20 animate-on-scroll fade-in-up stagger-3">
+                    <div class="absolute left-0 top-0">
+                        <div class="timeline-dot">3</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-sm shadow-sm">
+                        <div class="text-sm text-[#C5A065] font-bold mb-1">2022</div>
+                        <h4 class="font-bold text-lg mb-2">Curation & Production Services</h4>
+                        <p class="text-stone-600 text-sm">Added full-cycle exhibition management. Produced 8 exhibitions for corporate and private foundations, managing complex international logistics.</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 4 -->
+                <div class="timeline-item relative pl-20 animate-on-scroll fade-in-up stagger-1">
+                    <div class="absolute left-0 top-0">
+                        <div class="timeline-dot">4</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-sm shadow-sm">
+                        <div class="text-sm text-[#C5A065] font-bold mb-1">2023</div>
+                        <h4 class="font-bold text-lg mb-2">Market Leadership Position</h4>
+                        <p class="text-stone-600 text-sm">Achieved €8M in facilitated transactions. Expanded team to 12 specialists across all departments. Named "Rising Star" by Moscow Art Week.</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Item 5 -->
+                <div class="timeline-item relative pl-20 animate-on-scroll fade-in-up stagger-2">
+                    <div class="absolute left-0 top-0">
+                        <div class="timeline-dot">5</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-sm shadow-sm">
+                        <div class="text-sm text-[#C5A065] font-bold mb-1">2024-2025</div>
+                        <h4 class="font-bold text-lg mb-2">Global Expansion & Innovation</h4>
+                        <p class="text-stone-600 text-sm">Opened international partnerships with galleries in London and New York. Launched digital platform for remote art advisory. Current focus: sustainable growth and institutional partnerships.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Organizational Structure Section -->
+    <section id="structure" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 animate-on-scroll fade-in-up">
+                <h2 class="text-3xl font-serif text-[#2C2A29] mb-4">Organizational Structure</h2>
+                <p class="text-stone-500 max-w-3xl">Structured around our core services to ensure specialized expertise and efficiency. Hover over a department to see staffing details.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Dept 1 -->
+                <div class="group bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-all duration-300 border-t-4 border-[#C5A065] animate-on-scroll fade-in-up stagger-1">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold font-serif">Brokerage & Investment</h3>
+                        <span class="text-2xl" role="img" aria-label="Balance scale icon">⚖️</span>
+                    </div>
+                    <p class="text-stone-600 mb-6 text-sm">Focuses on market analysis, valuation, and legal compliance.</p>
+                    
+                    <div class="opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                        <h4 class="text-xs font-bold uppercase text-[#C5A065] mb-2">Staffing Focus</h4>
+                        <ul class="text-sm space-y-2 text-stone-800">
+                            <li class="flex items-center"><span class="mr-2">•</span> Art Historians</li>
+                            <li class="flex items-center"><span class="mr-2">•</span> Financial Analysts</li>
+                            <li class="flex items-center"><span class="mr-2">•</span> Legal Counsel (Art Law)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Dept 2 -->
+                <div class="group bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-all duration-300 border-t-4 border-stone-300 animate-on-scroll fade-in-up stagger-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold font-serif">Media & Comms</h3>
+                        <span class="text-2xl" role="img" aria-label="Megaphone icon">📢</span>
+                    </div>
+                    <p class="text-stone-600 mb-6 text-sm">Handles press outreach, content creation, and crisis management.</p>
+                    
+                    <div class="opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                        <h4 class="text-xs font-bold uppercase text-[#C5A065] mb-2">Staffing Focus</h4>
+                        <ul class="text-sm space-y-2 text-stone-800">
+                            <li class="flex items-center"><span class="mr-2">•</span> PR Specialists</li>
+                            <li class="flex items-center"><span class="mr-2">•</span> Content Strategists</li>
+                            <li class="flex items-center"><span class="mr-2">•</span> Copywriters (RU/EN)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Dept 3 -->
+                <div class="group bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-all duration-300 border-t-4 border-stone-300 animate-on-scroll fade-in-up stagger-3">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold font-serif">Curation & Logistics</h3>
+                        <span class="text-2xl" role="img" aria-label="Framed picture icon">🖼️</span>
+                    </div>
+                    <p class="text-stone-600 mb-6 text-sm">Manages exhibition design, transport, insurance, and installation.</p>
+                    
+                    <div class="opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                        <h4 class="text-xs font-bold uppercase text-[#C5A065] mb-2">Staffing Focus</h4>
+                        <ul class="text-sm space-y-2 text-stone-800">
+                            <li class="flex items-center"><span class="mr-2">•</span> Curators</li>
+                            <li class="flex items-center"><span class="mr-2">•</span> Project Managers</li>
+                            <li class="flex items-center"><span class="mr-2">•</span> Logistics Coordinators</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Clientele Section -->
+    <section id="clientele" class="py-16 bg-[#F9F8F6] border-t border-stone-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-serif text-[#2C2A29] mb-8 text-center animate-on-scroll fade-in-up">Target Clientele</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Client 1 -->
+                <div class="bg-white p-6 text-center rounded-lg shadow-sm hover:shadow-md transition-all animate-on-scroll fade-in-up stagger-1">
+                    <div class="text-4xl mb-3" role="img" aria-label="Classical building icon">🏛️</div>
+                    <h3 class="font-bold text-lg mb-2">HNWIs</h3>
+                    <p class="text-sm text-stone-600">Private Russian & International collectors seeking discreet acquisition & advice.</p>
+                </div>
+                <!-- Client 2 -->
+                <div class="bg-white p-6 text-center rounded-lg shadow-sm hover:shadow-md transition-all animate-on-scroll fade-in-up stagger-2">
+                    <div class="text-4xl mb-3" role="img" aria-label="Office building icon">🏢</div>
+                    <h3 class="font-bold text-lg mb-2">Corporate Collections</h3>
+                    <p class="text-sm text-stone-600">Businesses building collections for public spaces or employee engagement.</p>
+                </div>
+                <!-- Client 3 -->
+                <div class="bg-white p-6 text-center rounded-lg shadow-sm hover:shadow-md transition-all animate-on-scroll fade-in-up stagger-3">
+                    <div class="text-4xl mb-3" role="img" aria-label="Artist palette icon">🎨</div>
+                    <h3 class="font-bold text-lg mb-2">Emerging Artists</h3>
+                    <p class="text-sm text-stone-600">Talent requiring strategic career guidance and international market penetration.</p>
+                </div>
+            </div>
+
+            <!-- Global Reach Visualization -->
+            <div class="bg-white p-8 rounded-sm shadow-sm animate-on-scroll fade-in-up stagger-1">
+                <h3 class="text-2xl font-serif text-center mb-6">Global Reach</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Map Placeholder -->
+                    <div class="relative h-64 bg-stone-100 rounded flex items-center justify-center overflow-hidden">
+                        <div class="text-center text-stone-400">
+                            <p class="text-sm mb-2">Active Markets</p>
+                            <div class="relative w-full h-48">
+                                <!-- Simple visualization of global presence -->
+                                <div class="absolute top-1/4 left-1/4 map-marker" title="Moscow"></div>
+                                <div class="absolute top-1/3 left-2/3 map-marker" title="London"></div>
+                                <div class="absolute top-1/2 left-1/6 map-marker" title="New York"></div>
+                                <div class="absolute top-2/3 left-1/2 map-marker" title="Dubai"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Reach Stats Chart -->
+                    <div class="chart-wrapper h-64">
+                        <canvas id="reachChart" role="img" aria-label="Chart showing geographic reach statistics"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center animate-on-scroll fade-in-up">
+                <h2 class="text-3xl font-serif text-[#2C2A29] mb-4">Get In Touch</h2>
+                <p class="text-stone-500 max-w-2xl mx-auto">Whether you're looking to acquire, sell, or elevate your artistic career, we're here to guide you with expertise and discretion.</p>
+            </div>
+
+            <form id="contact-form" class="space-y-6 bg-[#F9F8F6] p-8 rounded-sm shadow-sm animate-on-scroll fade-in-up stagger-1" novalidate>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-sm font-bold mb-2 text-stone-700">Name *</label>
+                        <input type="text" id="name" name="name" class="form-input" required aria-required="true" aria-describedby="name-error">
+                        <div id="name-error" class="error-message" role="alert"></div>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-bold mb-2 text-stone-700">Email *</label>
+                        <input type="email" id="email" name="email" class="form-input" required aria-required="true" aria-describedby="email-error">
+                        <div id="email-error" class="error-message" role="alert"></div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="inquiry-type" class="block text-sm font-bold mb-2 text-stone-700">Inquiry Type *</label>
+                        <select id="inquiry-type" name="inquiry-type" class="form-input" required aria-required="true">
+                            <option value="">Select an option</option>
+                            <option value="acquisition">Art Acquisition</option>
+                            <option value="sale">Private Sale</option>
+                            <option value="artist-representation">Artist Representation</option>
+                            <option value="curation">Exhibition Curation</option>
+                            <option value="advisory">Investment Advisory</option>
+                            <option value="other">Other</option>
+                        </select>
+                        <div id="inquiry-type-error" class="error-message" role="alert"></div>
+                    </div>
+                    <div>
+                        <label for="budget" class="block text-sm font-bold mb-2 text-stone-700">Budget Range</label>
+                        <select id="budget" name="budget" class="form-input">
+                            <option value="">Prefer not to say</option>
+                            <option value="under-100k">Under €100K</option>
+                            <option value="100k-500k">€100K - €500K</option>
+                            <option value="500k-1m">€500K - €1M</option>
+                            <option value="1m-5m">€1M - €5M</option>
+                            <option value="over-5m">Over €5M</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="message" class="block text-sm font-bold mb-2 text-stone-700">Message *</label>
+                    <textarea id="message" name="message" rows="6" class="form-input" required aria-required="true" aria-describedby="message-error"></textarea>
+                    <div id="message-error" class="error-message" role="alert"></div>
+                </div>
+
+                <div>
+                    <label for="artwork-file" class="block text-sm font-bold mb-2 text-stone-700">Attach Images (Optional)</label>
+                    <input type="file" id="artwork-file" name="artwork-file" class="form-input" accept="image/*" multiple>
+                    <p class="text-xs text-stone-500 mt-1">JPG, PNG, or PDF. Max 10MB per file.</p>
+                </div>
+
+                <div class="flex items-start">
+                    <input type="checkbox" id="privacy" name="privacy" class="mt-1 mr-3" required aria-required="true">
+                    <label for="privacy" class="text-sm text-stone-600">
+                        I agree to the privacy policy and understand that my information will be handled with strict confidentiality. *
+                    </label>
+                </div>
+                <div id="privacy-error" class="error-message" role="alert"></div>
+
+                <button type="submit" id="submit-btn" class="w-full bg-[#C5A065] text-white py-4 px-6 rounded hover:bg-[#B08F54] transition-all duration-300 font-bold uppercase text-sm tracking-wider" aria-label="Submit contact form">
+                    Submit Inquiry
+                </button>
+
+                <div id="form-success" class="hidden bg-green-50 border border-green-200 text-green-800 p-4 rounded text-center" role="alert">
+                    <strong>Thank you!</strong> Your inquiry has been received. We'll respond within 24 hours.
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#2C2A29] text-stone-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-6 md:mb-0 text-center md:text-left">
+                <h4 class="text-white text-xl font-serif mb-2">ArtMedia Agency</h4>
+                <p class="text-sm">Moscow, Russia</p>
+                <p class="text-sm mt-2">Connecting the world of fine art.</p>
+            </div>
+            <div class="text-sm text-center md:text-right">
+                <p>&copy; 2025 ArtMedia Agency.</p>
+                <p>All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Case Study Modal -->
+    <div id="case-study-modal" class="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+        <div class="modal-content">
+            <div class="p-8">
+                <div class="flex justify-between items-start mb-6">
+                    <h3 id="modal-title" class="text-3xl font-serif text-[#2C2A29]">Detailed Case Study</h3>
+                    <button onclick="closeCaseStudy()" class="text-stone-400 hover:text-stone-600 text-2xl leading-none" aria-label="Close modal">&times;</button>
+                </div>
+
+                <div id="modal-body" class="space-y-6">
+                    <!-- Content will be dynamically loaded -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // --- State Management ---
+        const state = {
+            currentView: 'brokerage',
+            mobileMenuOpen: false,
+            chartsLoaded: false
+        };
+
+        // --- Data Store ---
+        const contentData = {
+            brokerage: {
+                title: "Fine Art Brokerage",
+                desc: "<p>We act as fiduciary partners for our clients. Whether acquiring established masters or deaccessioning private collections, our Brokerage department ensures financial rigor and discretion.</p><p class='mt-4'><strong>Based on Past Projects:</strong> We have successfully managed high-net-worth acquisitions and secured private sales, ensuring asset value appreciation.</p>",
+                list: [
+                    "Market Analysis & Asset Valuation",
+                    "Collector Relations",
+                    "Managing Private Transactions",
+                    "Legal Compliance (Title, Provenance)"
+                ],
+                chartType: 'line',
+                chartLabel: 'Asset Valuation Growth (Case Study)',
+                chartData: [100, 115, 130, 142, 155, 175],
+                chartLabels: ['Yr 1', 'Yr 2', 'Yr 3', 'Yr 4', 'Yr 5', 'Exit'],
+                caseStudy: {
+                    title: "Russian Avant-Garde Acquisition Portfolio",
+                    client: "International Private Collector",
+                    timeline: "2020-2025 (5-year investment cycle)",
+                    details: [
+                        { label: "Initial Investment", value: "€2.4M" },
+                        { label: "Exit Valuation", value: "€4.2M" },
+                        { label: "ROI", value: "75%" },
+                        { label: "Works Acquired", value: "12 pieces" }
+                    ],
+                    narrative: "A discerning European collector approached ArtMedia seeking exposure to Russian avant-garde art. Our team identified undervalued works by established masters including Malevich and Rozanova. Through careful market analysis and relationship leveraging, we acquired a portfolio that significantly outperformed traditional investments.",
+                    testimonial: "ArtMedia's deep knowledge of the Russian avant-garde market and their discretion in negotiations was exceptional. The returns exceeded our expectations.",
+                    chartData: {
+                        labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
+                        values: [2400, 2760, 3120, 3408, 3720, 4200]
+                    }
+                }
+            },
+            media: {
+                title: "Artist & Media Relations",
+                desc: "<p>Our Media department bridges the gap between Russian talent and the global stage. We manage strategic PR, editorial placements, and digital presence.</p><p class='mt-4'><strong>Based on Past Projects:</strong> Launching emerging artists internationally (e.g., Ivanova) and securing critical reviews in major publications like <em>The Art Newspaper</em>.</p>",
+                list: [
+                    "Press Outreach & PR",
+                    "Content Creation (Catalogues)",
+                    "Social Media Strategy",
+                    "Crisis Management"
+                ],
+                chartType: 'bar',
+                chartLabel: 'Media Impressions (millions)',
+                chartData: [0.5, 1.2, 2.8, 4.5, 6.0],
+                chartLabels: ['Launch', 'Q1', 'Q2', 'Q3', 'Q4'],
+                caseStudy: {
+                    title: "International Launch: Artist Elena Ivanova",
+                    client: "Emerging Contemporary Artist",
+                    timeline: "12-month campaign (2023)",
+                    details: [
+                        { label: "Media Placements", value: "37 articles" },
+                        { label: "Social Growth", value: "15K to 82K followers" },
+                        { label: "Gallery Representation", value: "3 international galleries" },
+                        { label: "Sales Increase", value: "340%" }
+                    ],
+                    narrative: "Elena Ivanova, a talented Moscow-based painter, had limited international exposure. ArtMedia developed a comprehensive media strategy including targeted press outreach, social media content creation, and strategic exhibition placements. Within one year, she secured representation in London, New York, and Berlin.",
+                    testimonial: "ArtMedia transformed my career. Their strategic approach and industry connections opened doors I never thought possible.",
+                    chartData: {
+                        labels: ['Pre-Campaign', 'Month 3', 'Month 6', 'Month 9', 'Month 12'],
+                        values: [0.5, 1.2, 2.8, 4.5, 6.0]
+                    }
+                }
+            },
+            curation: {
+                title: "Curation & Production",
+                desc: "<p>From concept to installation, we handle the logistics of culture. We produce exhibitions for foundations and manage complex transport and insurance needs.</p><p class='mt-4'><strong>Based on Past Projects:</strong> Producing themed exhibitions for cultural foundations and managing logistics for international art fairs.</p>",
+                list: [
+                    "Exhibition Design",
+                    "Venue Selection",
+                    "Artwork Transport & Insurance",
+                    "Installation Oversight"
+                ],
+                chartType: 'doughnut',
+                chartLabel: 'Project Distribution',
+                chartData: [40, 35, 25],
+                chartLabels: ['Corporate Commissions', 'Private Exhibitions', 'Art Fairs'],
+                caseStudy: {
+                    title: "Shchukin Heritage Exhibition",
+                    client: "Private Cultural Foundation",
+                    timeline: "6-month production cycle (2024)",
+                    details: [
+                        { label: "Artworks Managed", value: "64 pieces" },
+                        { label: "Exhibition Venues", value: "3 cities" },
+                        { label: "Visitor Count", value: "28,000" },
+                        { label: "Insurance Value", value: "€45M" }
+                    ],
+                    narrative: "A major retrospective celebrating the Shchukin collection required meticulous planning across Moscow, St. Petersburg, and London. ArtMedia managed all aspects including loan agreements, international shipping, insurance, installation design, and public programming.",
+                    testimonial: "The complexity of this project was immense. ArtMedia's professionalism and attention to detail ensured flawless execution across three countries.",
+                    chartData: {
+                        labels: ['Corporate Commissions', 'Private Exhibitions', 'Art Fairs'],
+                        values: [40, 35, 25]
+                    }
+                }
+            }
+        };
+
+        // --- Chart Instances ---
+        let mainChartInstance = null;
+        let reachChartInstance = null;
+
+        // --- Initialization ---
+        function init() {
+            updateDashboard('brokerage');
+            setupScrollAnimations();
+            setupReachChart();
+            // Add keyboard navigation for tabs
+            setupKeyboardNavigation();
+        }
+
+        // --- Scroll to Section ---
+        let scrolling = false;
+        function scrollToSection(id) {
+            if (scrolling) return;
+            scrolling = true;
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => { scrolling = false; }, 1000);
+        }
+
+        // --- Mobile Menu ---
+        function toggleMobileMenu() {
+            state.mobileMenuOpen = !state.mobileMenuOpen;
+            const menu = document.getElementById('mobile-menu');
+            const hamburger = document.getElementById('hamburger-icon');
+            const close = document.getElementById('close-icon');
+            const btn = document.getElementById('mobile-menu-btn');
+            
+            if (state.mobileMenuOpen) {
+                menu.classList.add('active');
+                hamburger.classList.add('hidden');
+                close.classList.remove('hidden');
+                btn.setAttribute('aria-expanded', 'true');
+            } else {
+                menu.classList.remove('active');
+                hamburger.classList.remove('hidden');
+                close.classList.add('hidden');
+                btn.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        function closeMobileMenu() {
+            state.mobileMenuOpen = false;
+            document.getElementById('mobile-menu').classList.remove('active');
+            document.getElementById('hamburger-icon').classList.remove('hidden');
+            document.getElementById('close-icon').classList.add('hidden');
+            document.getElementById('mobile-menu-btn').setAttribute('aria-expanded', 'false');
+        }
+
+        // --- Dashboard Update ---
+        function updateDashboard(viewKey) {
+            state.currentView = viewKey;
+            const data = contentData[viewKey];
+
+            // Update text content
+            document.getElementById('dash-title').innerText = data.title;
+            document.getElementById('dash-desc').innerHTML = data.desc;
+            
+            // Update list
+            const listEl = document.getElementById('dash-list');
+            listEl.innerHTML = '';
+            data.list.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span class="mr-2 text-[#C5A065]">➤</span> ${item}`;
+                listEl.appendChild(li);
+            });
+
+            // Update chart
+            renderChart(data);
+
+            // Update tabs
+            const buttons = ['brokerage', 'media', 'curation'];
+            buttons.forEach(btn => {
+                const el = document.getElementById(`btn-${btn}`);
+                if (btn === viewKey) {
+                    el.classList.remove('tab-inactive');
+                    el.classList.add('tab-active');
+                    el.setAttribute('aria-selected', 'true');
+                } else {
+                    el.classList.remove('tab-active');
+                    el.classList.add('tab-inactive');
+                    el.setAttribute('aria-selected', 'false');
+                }
+            });
+        }
+
+        // --- Chart Rendering ---
+        function renderChart(data) {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+
+            if (mainChartInstance) {
+                mainChartInstance.destroy();
+            }
+
+            const config = {
+                type: data.chartType,
+                data: {
+                    labels: data.chartLabels,
+                    datasets: [{
+                        label: data.chartLabel,
+                        data: data.chartData,
+                        backgroundColor: [
+                            '#C5A065',
+                            '#2C2A29',
+                            '#E5E2DD',
+                            '#A8A29E',
+                            '#78716C',
+                            '#D6D3D1'
+                        ],
+                        borderColor: data.chartType === 'line' ? '#C5A065' : '#fff',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: data.chartType === 'line'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: {
+                        duration: 1500,
+                        easing: 'easeInOutQuart'
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Lato' },
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#2C2A29',
+                            titleFont: { family: 'Cinzel' },
+                            bodyFont: { family: 'Lato' },
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    if (data.chartType === 'doughnut') {
+                                        return context.label + ': ' + context.raw + '%';
+                                    }
+                                    return context.dataset.label + ': ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    },
+                    scales: data.chartType === 'doughnut' ? {} : {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f3f3f3' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            };
+
+            if (data.chartType === 'line') {
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(197, 160, 101, 0.2)');
+                gradient.addColorStop(1, 'rgba(197, 160, 101, 0)');
+                config.data.datasets[0].backgroundColor = gradient;
+            }
+
+            mainChartInstance = new Chart(ctx, config);
+            state.chartsLoaded = true;
+        }
+
+        // --- Reach Chart ---
+        function setupReachChart() {
+            const ctx = document.getElementById('reachChart').getContext('2d');
+            
+            reachChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Moscow', 'St. Petersburg', 'London', 'New York', 'Dubai'],
+                    datasets: [{
+                        label: 'Market Presence',
+                        data: [95, 75, 60, 45, 30],
+                        backgroundColor: 'rgba(197, 160, 101, 0.2)',
+                        borderColor: '#C5A065',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#C5A065',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#C5A065'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- Scroll Animations ---
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // --- Case Study Modal ---
+        function openCaseStudy() {
+            const modal = document.getElementById('case-study-modal');
+            const modalBody = document.getElementById('modal-body');
+            const data = contentData[state.currentView].caseStudy;
+
+            modalBody.innerHTML = `
+                <div class="bg-[#F9F8F6] p-6 rounded mb-6">
+                    <h4 class="text-xl font-bold mb-2">${data.title}</h4>
+                    <div class="text-sm text-stone-600 space-y-1">
+                        <p><strong>Client:</strong> ${data.client}</p>
+                        <p><strong>Timeline:</strong> ${data.timeline}</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    ${data.details.map(item => `
+                        <div class="text-center p-4 bg-stone-50 rounded">
+                            <div class="text-2xl font-bold text-[#C5A065] mb-1">${item.value}</div>
+                            <div class="text-xs text-stone-600 uppercase">${item.label}</div>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="mb-6">
+                    <h5 class="font-bold mb-2">Project Overview</h5>
+                    <p class="text-stone-700 leading-relaxed">${data.narrative}</p>
+                </div>
+
+                <div class="bg-stone-50 p-6 border-l-4 border-[#C5A065] mb-6">
+                    <h5 class="font-bold mb-2 text-sm uppercase tracking-wide text-stone-500">Client Testimonial</h5>
+                    <p class="text-stone-700 italic">"${data.testimonial}"</p>
+                </div>
+
+                <div class="h-64 bg-[#F9F8F6] p-4 rounded">
+                    <canvas id="modalChart"></canvas>
+                </div>
+            `;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Render modal chart
+            setTimeout(() => {
+                const ctx = document.getElementById('modalChart').getContext('2d');
+                new Chart(ctx, {
+                    type: state.currentView === 'curation' ? 'doughnut' : 'line',
+                    data: {
+                        labels: data.chartData.labels,
+                        datasets: [{
+                            label: 'Performance Metrics',
+                            data: data.chartData.values,
+                            backgroundColor: state.currentView === 'curation' ? 
+                                ['#C5A065', '#2C2A29', '#E5E2DD'] : 
+                                'rgba(197, 160, 101, 0.2)',
+                            borderColor: '#C5A065',
+                            borderWidth: 2,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }, 100);
+        }
+
+        function closeCaseStudy() {
+            const modal = document.getElementById('case-study-modal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCaseStudy();
+            }
+        });
+
+        // Close modal on outside click
+        document.getElementById('case-study-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'case-study-modal') {
+                closeCaseStudy();
+            }
+        });
+
+        // --- Contact Form Validation ---
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Clear previous errors
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+
+            let isValid = true;
+
+            // Validate name
+            const name = document.getElementById('name');
+            if (!name.value.trim()) {
+                document.getElementById('name-error').textContent = 'Name is required';
+                name.classList.add('error');
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email.value.trim()) {
+                document.getElementById('email-error').textContent = 'Email is required';
+                email.classList.add('error');
+                isValid = false;
+            } else if (!emailRegex.test(email.value)) {
+                document.getElementById('email-error').textContent = 'Please enter a valid email';
+                email.classList.add('error');
+                isValid = false;
+            }
+
+            // Validate inquiry type
+            const inquiryType = document.getElementById('inquiry-type');
+            if (!inquiryType.value) {
+                document.getElementById('inquiry-type-error').textContent = 'Please select an inquiry type';
+                inquiryType.classList.add('error');
+                isValid = false;
+            }
+
+            // Validate message
+            const message = document.getElementById('message');
+            if (!message.value.trim()) {
+                document.getElementById('message-error').textContent = 'Message is required';
+                message.classList.add('error');
+                isValid = false;
+            } else if (message.value.trim().length < 20) {
+                document.getElementById('message-error').textContent = 'Message must be at least 20 characters';
+                message.classList.add('error');
+                isValid = false;
+            }
+
+            // Validate privacy checkbox
+            const privacy = document.getElementById('privacy');
+            if (!privacy.checked) {
+                document.getElementById('privacy-error').textContent = 'You must agree to the privacy policy';
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Show loading state
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.classList.add('btn-loading');
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+
+                // Simulate form submission
+                setTimeout(() => {
+                    document.getElementById('contact-form').classList.add('hidden');
+                    document.getElementById('form-success').classList.remove('hidden');
+                }, 1500);
+            }
+        });
+
+        // --- Keyboard Navigation for Tabs ---
+        function setupKeyboardNavigation() {
+            const tabs = ['brokerage', 'media', 'curation'];
+            const tabButtons = tabs.map(id => document.getElementById(`btn-${id}`));
+
+            tabButtons.forEach((btn, index) => {
+                btn.addEventListener('keydown', (e) => {
+                    let newIndex = index;
+
+                    if (e.key === 'ArrowRight') {
+                        newIndex = (index + 1) % tabs.length;
+                        e.preventDefault();
+                    } else if (e.key === 'ArrowLeft') {
+                        newIndex = (index - 1 + tabs.length) % tabs.length;
+                        e.preventDefault();
+                    } else if (e.key === 'Home') {
+                        newIndex = 0;
+                        e.preventDefault();
+                    } else if (e.key === 'End') {
+                        newIndex = tabs.length - 1;
+                        e.preventDefault();
+                    }
+
+                    if (newIndex !== index) {
+                        tabButtons[newIndex].focus();
+                        updateDashboard(tabs[newIndex]);
+                    }
+                });
+            });
+        }
+
+        // --- Performance: Debounced Scroll Handler ---
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                // Additional scroll-based features can be added here
+            }, 100);
+        });
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
