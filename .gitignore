@@ -1,0 +1,10 @@
+# Certificate files - should not be committed to version control
+*.csr
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Private keys and certificates
+*.cert
+*.crt
