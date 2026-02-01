@@ -119,6 +119,8 @@
         .stagger-2 { animation-delay: 0.2s; }
         .stagger-3 { animation-delay: 0.3s; }
         .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+        .stagger-6 { animation-delay: 0.6s; }
 
         /* Project card hover effect */
         .project-card {
@@ -303,24 +305,22 @@
             <div class="text-center mb-16 animate-on-scroll fade-in-up">
                 <h2 class="text-4xl sm:text-5xl mb-6" style="font-family: 'Playfair Display', serif;">Our Projects</h2>
                 <p class="text-lg text-stone-600 max-w-2xl mx-auto">
-                    Four distinct initiatives working together to advance art documentation, agency services, and cultural preservation
+                    Six initiatives advancing art documentation, agency services, research, and cultural preservation
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Project 1: Hardware Art Database -->
-                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-1" onclick="openProjectModal('hardware')">
+                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-1 cursor-pointer" onclick="openProjectModal('hardware')">
                     <div class="mb-6">
                         <div class="text-5xl mb-4">💾</div>
-                        <h3 class="text-2xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">Hardware Art Database</h3>
-                        <p class="text-stone-600 mb-4">
+                        <h3 class="text-xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">Hardware Art Database</h3>
+                        <p class="text-stone-600 mb-4 text-sm">
                             A comprehensive digital archive documenting hardware-based art installations, electronic art, and technology-driven artistic practices.
                         </p>
                         <div class="flex items-center text-sm text-[#D4AF37] font-medium">
                             <span>hardwarearts.com</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
                     </div>
                     <div class="pt-4 border-t border-stone-200">
@@ -328,39 +328,35 @@
                     </div>
                 </div>
 
-                <!-- Project 2: Artmedia Agency -->
-                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-2" onclick="openProjectModal('artmedia')">
+                <!-- Project 2: Artmedia AI Agency -->
+                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-2 cursor-pointer" onclick="openProjectModal('artmedia')">
                     <div class="mb-6">
-                        <div class="text-5xl mb-4">🎭</div>
-                        <h3 class="text-2xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">Artmedia Agency</h3>
-                        <p class="text-stone-600 mb-4">
-                            A premier fine art brokerage and media consultancy connecting Russian and international collectors, artists, and institutions.
+                        <div class="text-5xl mb-4">✨</div>
+                        <h3 class="text-xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">Artmedia AI Agency</h3>
+                        <p class="text-stone-600 mb-4 text-sm">
+                            Strategic art brokerage and AI-powered insights: investment evaluation, media strategy, and exhibition consulting for collectors and institutions.
                         </p>
                         <div class="flex items-center text-sm text-[#D4AF37] font-medium">
-                            <span>artmedia.ru</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                            <span>nacfund.org/artmedia.html</span>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
                     </div>
                     <div class="pt-4 border-t border-stone-200">
-                        <span class="text-xs uppercase tracking-wide text-stone-500">Art Brokerage & Media</span>
+                        <span class="text-xs uppercase tracking-wide text-stone-500">Art Brokerage & AI</span>
                     </div>
                 </div>
 
                 <!-- Project 3: Shchukin Foundation -->
-                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-3" onclick="openProjectModal('shchukin')">
+                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-3 cursor-pointer" onclick="openProjectModal('shchukin')">
                     <div class="mb-6">
                         <div class="text-5xl mb-4">🏛️</div>
-                        <h3 class="text-2xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">Shchukin Foundation</h3>
-                        <p class="text-stone-600 mb-4">
-                            Dedicated to preserving and promoting the legacy of the Shchukin collection, one of the most important private art collections in history.
+                        <h3 class="text-xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">Shchukin Foundation</h3>
+                        <p class="text-stone-600 mb-4 text-sm">
+                            Preserving and promoting the legacy of Sergei Shchukin's collection—Impressionist, Post-Impressionist, and early Modern masterpieces.
                         </p>
                         <div class="flex items-center text-sm text-[#D4AF37] font-medium">
                             <span>shchukin.org</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
                     </div>
                     <div class="pt-4 border-t border-stone-200">
@@ -369,22 +365,56 @@
                 </div>
 
                 <!-- Project 4: National Art Collections Foundation -->
-                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-4" onclick="openProjectModal('nacfund')">
+                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-4 cursor-pointer" onclick="openProjectModal('nacfund')">
                     <div class="mb-6">
                         <div class="text-5xl mb-4">🎨</div>
-                        <h3 class="text-2xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">National Art Collections Foundation</h3>
-                        <p class="text-stone-600 mb-4">
-                            Supporting the preservation, documentation, and public access to national art collections through research, exhibitions, and digital initiatives.
+                        <h3 class="text-xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">National Art Collections Foundation</h3>
+                        <p class="text-stone-600 mb-4 text-sm">
+                            ФНХК: Russian and Western art collections, exhibitions, artists, and partners—from 20th-century avant-garde to contemporary.
                         </p>
                         <div class="flex items-center text-sm text-[#D4AF37] font-medium">
                             <span>nacfund.org</span>
-                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </div>
                     </div>
                     <div class="pt-4 border-t border-stone-200">
                         <span class="text-xs uppercase tracking-wide text-stone-500">Art Collections Foundation</span>
+                    </div>
+                </div>
+
+                <!-- Project 5: European Institute of Avant-Garde Heritage -->
+                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-5 cursor-pointer" onclick="openProjectModal('ieha')">
+                    <div class="mb-6">
+                        <div class="text-5xl mb-4">🔬</div>
+                        <h3 class="text-xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">European Institute of Avant-Garde Heritage</h3>
+                        <p class="text-stone-600 mb-4 text-sm">
+                            IEHA: scholarly study and authentication of high avant-garde art (1890–1930) through benchmark-based analysis—<em>sine ira et studio</em>.
+                        </p>
+                        <div class="flex items-center text-sm text-[#D4AF37] font-medium">
+                            <span>site.nacfund.org</span>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-stone-200">
+                        <span class="text-xs uppercase tracking-wide text-stone-500">Research & Authentication</span>
+                    </div>
+                </div>
+
+                <!-- Project 6: Bad Penny Fine Art Acquisitions -->
+                <div class="project-card bg-white p-8 rounded-sm shadow-md animate-on-scroll fade-in-up stagger-6 cursor-pointer" onclick="openProjectModal('badpenny')">
+                    <div class="mb-6">
+                        <div class="text-5xl mb-4">🪙</div>
+                        <h3 class="text-xl font-semibold mb-3" style="font-family: 'Playfair Display', serif;">Bad Penny Fine Art Acquisitions</h3>
+                        <p class="text-stone-600 mb-4 text-sm">
+                            When unwanted art keeps coming back: acquisitions that defy expectations—controversial, undervalued, or resurfacing in the market.
+                        </p>
+                        <div class="flex items-center text-sm text-[#D4AF37] font-medium">
+                            <span>badpenny.art</span>
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-stone-200">
+                        <span class="text-xs uppercase tracking-wide text-stone-500">Fine Art Acquisitions</span>
                     </div>
                 </div>
             </div>
@@ -443,10 +473,12 @@
                 <div>
                     <h5 class="text-white font-semibold mb-4">Projects</h5>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="https://hardwarearts.com" target="_blank" class="hover:text-[#D4AF37] transition">Hardware Art Database</a></li>
-                        <li><a href="https://artmedia.ru" target="_blank" class="hover:text-[#D4AF37] transition">Artmedia Agency</a></li>
-                        <li><a href="https://shchukin.org" target="_blank" class="hover:text-[#D4AF37] transition">Shchukin Foundation</a></li>
-                        <li><a href="https://nacfund.org" target="_blank" class="hover:text-[#D4AF37] transition">NAC Fund</a></li>
+                        <li><a href="https://hardwarearts.com/" target="_blank" rel="noopener" class="hover:text-[#D4AF37] transition">Hardware Art Database</a></li>
+                        <li><a href="http://nacfund.org/artmedia.html" target="_blank" rel="noopener" class="hover:text-[#D4AF37] transition">Artmedia AI Agency</a></li>
+                        <li><a href="https://shchukin.org/" target="_blank" rel="noopener" class="hover:text-[#D4AF37] transition">Shchukin Foundation</a></li>
+                        <li><a href="http://nacfund.org/" target="_blank" rel="noopener" class="hover:text-[#D4AF37] transition">National Art Collections Foundation</a></li>
+                        <li><a href="http://site.nacfund.org/" target="_blank" rel="noopener" class="hover:text-[#D4AF37] transition">European Institute of Avant-Garde Heritage</a></li>
+                        <li><a href="https://badpenny.art/" target="_blank" rel="noopener" class="hover:text-[#D4AF37] transition">Bad Penny Fine Art Acquisitions</a></li>
                     </ul>
                 </div>
                 <div>
@@ -523,17 +555,46 @@
             },
             nacfund: {
                 title: "National Art Collections Foundation",
-                url: "https://nacfund.org",
+                url: "http://nacfund.org/",
                 icon: "🎨",
-                description: "The National Art Collections Foundation (NAC Fund) supports the preservation, documentation, and public access to national art collections. Through research initiatives, exhibitions, and digital projects, the foundation works to ensure that important artworks and collections remain accessible to the public and properly maintained for future generations.",
+                description: "The National Art Collections Foundation (ФНХК — Фонд национальных художественных коллекций) supports Russian and Western art: 20th-century avant-garde, non-conformist, and contemporary art. The foundation runs exhibitions, documents artists and private collections, and partners with galleries and institutions. Based in Moscow (Vetoshny Lane), it provides public access to collections, news, and cultural programs.",
                 features: [
-                    "Collection preservation and conservation",
-                    "Public access and exhibition programs",
-                    "Research and documentation projects",
-                    "Digital cataloging and archiving",
-                    "Educational outreach and partnerships"
+                    "Russian and Western art collections (20th c. to contemporary)",
+                    "Exhibitions, artists, partners, and articles",
+                    "Private and institutional collection documentation",
+                    "Moscow exhibition space and events",
+                    "Multilingual presence (EN / RU)"
                 ],
-                mission: "To support the preservation and public accessibility of national art collections through research, conservation, and innovative digital initiatives."
+                mission: "To support the preservation and public accessibility of national and private art collections through exhibitions, documentation, and partnerships."
+            },
+            ieha: {
+                title: "European Institute of Avant-Garde Heritage",
+                url: "http://site.nacfund.org/",
+                icon: "🔬",
+                description: "Founded in 2013, the European Institute of Avant-Garde Heritage (IEHA) is a pioneering initiative in the scholarly study and authentication of high avant-garde art. Specializing in the transformative period 1890–1930 (Jahrhundertwende), it employs benchmark-based artistic analysis to establish objective standards for movements including Suprematism, Constructivism, Futurism, and De Stijl. IEHA prioritizes direct engagement with artworks—\"вещество искусства\" (the substance of art)—and operates sine ira et studio: without anger and prejudice.",
+                features: [
+                    "Benchmark database of reference-quality artworks (эталонные произведения)",
+                    "Rigorous methodology: formal qualities, technical mastery, innovation merit",
+                    "Six-stage analytical framework (e.g. Black Square template)",
+                    "Covered movements: Russian Avant-Garde, European (Futurism, De Stijl, Bauhaus), cross-cultural (Dada, Orphism, Vorticism)",
+                    "Authentication consulting, quality assessment, research collaboration",
+                    "Multilingual (EN, RU, DE, FR) and international partnerships"
+                ],
+                mission: "To restore objectivity to avant-garde art authentication and scholarship; to enable viewers to remain alone with the painting through rationalization of sensations and evidence-based research."
+            },
+            badpenny: {
+                title: "Bad Penny Fine Art Acquisitions",
+                url: "https://badpenny.art/",
+                icon: "🪙",
+                description: "Bad Penny Fine Art Acquisitions explores artworks that \"keep coming back\"—pieces that defy conventional expectations, whether controversial, initially undervalued, or repeatedly resurfacing in the market. The concept challenges how value, taste, and cultural significance are assigned in the contemporary art world, from currency-as-canvas and digital innovation (e.g. blockchain art) to strategic advisory and institutional validation.",
+                features: [
+                    "Acquisitions and advisory for unconventional or resurfacing works",
+                    "Exploration of value, taste, and cultural significance in contemporary art",
+                    "Digital and technology-driven art (e.g. NFTs, blockchain)",
+                    "Strategic positioning and institutional validation narratives",
+                    "Collector perspectives and market transformation case studies"
+                ],
+                mission: "To enrich the art world by challenging established norms and inviting fresh dialogues about worth, meaning, and what deserves to be preserved—when fine art keeps coming back."
             }
         };
 
