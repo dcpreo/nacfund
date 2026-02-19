@@ -1,0 +1,29 @@
+[
+  {
+    "id": "1",
+    "title": "Black Square",
+    "artist": "Kazimir Malevich",
+    "year": "1915",
+    "medium": "Oil on canvas",
+    "dimensions": "79.5 × 79.5 cm",
+    "institution": "State Tretyakov Gallery"
+  },
+  {
+    "id": "2",
+    "title": "Composition with Red, Blue and Yellow",
+    "artist": "Piet Mondrian",
+    "year": "1930",
+    "medium": "Oil on canvas",
+    "dimensions": "51 × 51 cm",
+    "institution": "Kunsthaus Zürich"
+  },
+  {
+    "id": "3",
+    "title": "The Persistence of Memory",
+    "artist": "Salvador Dalí",
+    "year": "1931",
+    "medium": "Oil on canvas",
+    "dimensions": "24 × 33 cm",
+    "institution": "Museum of Modern Art"
+  }
+]

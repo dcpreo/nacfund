@@ -1,0 +1,22 @@
+{
+  "nav.home": "Accueil",
+  "nav.about": "À propos",
+  "nav.research": "Recherche",
+  "nav.collection": "Collection",
+  "nav.publications": "Publications",
+  "nav.experts": "Experts",
+  "nav.events": "Événements",
+  "nav.contact": "Contact",
+  "nav.membership": "Adhésion",
+  "pillars.research": "Recherche",
+  "pillars.researchDesc": "Méthodologie et normes",
+  "pillars.collection": "Collection",
+  "pillars.collectionDesc": "Base d'œuvres",
+  "pillars.experts": "Experts",
+  "pillars.expertsDesc": "Réseau d'experts",
+  "pillars.publications": "Publications",
+  "pillars.publicationsDesc": "Articles et rapports",
+  "stats.artworks": "Œuvres",
+  "stats.publications": "Publications",
+  "stats.experts": "Experts"
+}
