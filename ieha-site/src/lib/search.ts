@@ -1,5 +1,4 @@
 import Anthropic from '@anthropic-ai/sdk';
-import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { z } from 'zod';
 import artworksData from '../content/data/benchmark/artworks.seed.json';
 import artistsData from '../content/data/benchmark/artists.seed.json';
@@ -24,6 +23,28 @@ const SearchResultsSchema = z.object({
   ),
 });
 
+const SCHEMA = {
+  type: 'object' as const,
+  properties: {
+    results: {
+      type: 'array' as const,
+      items: {
+        type: 'object' as const,
+        properties: {
+          type: { type: 'string' as const, enum: ['artwork', 'publication', 'expert', 'event'] },
+          id: { type: 'string' as const },
+          title: { type: 'string' as const },
+          snippet: { type: 'string' as const },
+        },
+        required: ['type', 'id', 'title', 'snippet'],
+        additionalProperties: false,
+      },
+    },
+  },
+  required: ['results'],
+  additionalProperties: false,
+};
+
 const client = new Anthropic();
 
 export async function search(query: string): Promise<SearchResult[]> {
@@ -35,9 +56,16 @@ export async function search(query: string): Promise<SearchResult[]> {
     2
   );
 
-  const response = await client.messages.parse({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const response = await (client.messages as any).create({
     model: 'claude-opus-4-6',
     max_tokens: 1024,
+    output_config: {
+      format: {
+        type: 'json_schema',
+        schema: SCHEMA,
+      },
+    },
     messages: [
       {
         role: 'user',
@@ -51,9 +79,16 @@ ${corpus}
 Return only items from the corpus that are genuinely relevant to the query. For each result, write a brief snippet (1–2 sentences) explaining its relevance. If nothing matches, return an empty results array.`,
       },
     ],
-    output_format: zodOutputFormat(SearchResultsSchema),
   });
 
-  const parsed = response.parsed_output as z.infer<typeof SearchResultsSchema> | null;
-  return parsed?.results ?? [];
+  const textBlock = response.content.find((b: { type: string }) => b.type === 'text');
+  if (!textBlock) return [];
+
+  try {
+    const parsed = JSON.parse(textBlock.text);
+    const validated = SearchResultsSchema.safeParse(parsed);
+    return validated.success ? validated.data.results : [];
+  } catch {
+    return [];
+  }
 }
