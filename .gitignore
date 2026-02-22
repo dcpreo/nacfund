@@ -1,6 +1,14 @@
 # Dependencies
 node_modules/
 
+# Next.js build output
+ieha-site/.next/
+ieha-site/.env.local
+ieha-site/.env*.local
+
+# macOS
+.DS_Store
+
 # Certificate files - should not be committed to version control
 *.csr
 *.key
@@ -11,3 +19,5 @@ node_modules/
 # Private keys and certificates
 *.cert
 *.crt
+# Local Netlify folder
+.netlify
