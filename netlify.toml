@@ -1,3 +1,6 @@
 [build]
-  publish = "."
-  command = ""
+  base = "ieha-site"
+  command = "npm run build"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
