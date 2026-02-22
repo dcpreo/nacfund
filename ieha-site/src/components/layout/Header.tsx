@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Search } from 'lucide-react';
 import { LanguageSwitch } from './LanguageSwitch';
 import { navRoutes } from '@/lib/routes';
 import { getDictionary, type Locale } from '@/lib/i18n';
@@ -18,7 +19,12 @@ export async function Header({ locale }: { locale: Locale }) {
             </Link>
           ))}
         </nav>
-        <LanguageSwitch currentLocale={locale} />
+        <div className="flex items-center gap-4">
+          <Link href={`/${locale}/search`} className="text-muted-foreground hover:text-foreground" aria-label="Search">
+            <Search className="h-4 w-4" />
+          </Link>
+          <LanguageSwitch currentLocale={locale} />
+        </div>
       </div>
     </header>
   );
