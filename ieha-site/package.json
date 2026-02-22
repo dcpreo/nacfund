@@ -20,14 +20,18 @@
     "next-mdx-remote": "^4.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "resend": "^6.9.2",
     "tailwind-merge": "^2.2.0",
-    "zod": "^3.22.0"
+    "zod": "^3.25.76",
+    "zod-to-json-schema": "^3.25.1"
   },
   "devDependencies": {
     "@netlify/plugin-nextjs": "^5.15.8",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
+    "agentation": "^2.2.1",
+    "agentation-mcp": "^1.2.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.2.0",

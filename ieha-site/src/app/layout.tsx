@@ -14,10 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen antialiased">
         {children}
         {process.env.NODE_ENV === 'development' && (
-          <Agentation
-            endpoint="http://localhost:4747"
-            onSessionCreated={(sessionId) => console.log('Session started:', sessionId)}
-          />
+          <Agentation endpoint="http://localhost:4747" />
         )}
       </body>
     </html>
