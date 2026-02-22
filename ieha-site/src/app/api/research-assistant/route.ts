@@ -22,44 +22,56 @@ Collection corpus:
 ${corpus}`;
 
 export async function POST(request: Request) {
-  const { messages } = await request.json();
+  try {
+    const { messages } = await request.json();
 
-  const stream = client.messages.stream({
-    model: 'claude-opus-4-6',
-    max_tokens: 2048,
-    system: [
-      {
-        type: 'text',
-        text: SYSTEM_PROMPT,
-        cache_control: { type: 'ephemeral' },
-      },
-    ],
-    messages,
-  });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const stream = (client.messages as any).stream({
+      model: 'claude-opus-4-6',
+      max_tokens: 2048,
+      system: [
+        {
+          type: 'text',
+          text: SYSTEM_PROMPT,
+          cache_control: { type: 'ephemeral' },
+        },
+      ],
+      messages,
+    });
 
-  const encoder = new TextEncoder();
-  const readable = new ReadableStream({
-    async start(controller) {
-      for await (const event of stream) {
-        if (
-          event.type === 'content_block_delta' &&
-          event.delta.type === 'text_delta'
-        ) {
-          controller.enqueue(encoder.encode(event.delta.text));
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const event of stream) {
+            if (
+              event.type === 'content_block_delta' &&
+              event.delta.type === 'text_delta'
+            ) {
+              controller.enqueue(encoder.encode(event.delta.text));
+            }
+          }
+        } catch (err) {
+          console.error('Stream error:', err);
+          controller.enqueue(encoder.encode('Error: streaming failed.'));
+        } finally {
+          controller.close();
         }
-      }
-      controller.close();
-    },
-    cancel() {
-      stream.abort();
-    },
-  });
+      },
+      cancel() {
+        stream.abort?.();
+      },
+    });
 
-  return new Response(readable, {
-    headers: {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'Cache-Control': 'no-cache',
-      'X-Content-Type-Options': 'nosniff',
-    },
-  });
+    return new Response(readable, {
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache',
+        'X-Content-Type-Options': 'nosniff',
+      },
+    });
+  } catch (error) {
+    console.error('Research assistant error:', error);
+    return new Response('Internal server error', { status: 500 });
+  }
 }

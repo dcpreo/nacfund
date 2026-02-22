@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Agentation } from 'agentation';
+import { AgentationWidget } from '@/components/layout/AgentationWidget';
 
 export const metadata: Metadata = {
   title: 'materielart.tech — Material Art',
@@ -12,12 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen antialiased">
         {children}
-        {process.env.NODE_ENV === 'development' && (
-          <Agentation
-            endpoint="http://localhost:4747"
-            onSessionCreated={(sessionId) => console.log('Session started:', sessionId)}
-          />
-        )}
+        {process.env.NODE_ENV === 'development' && <AgentationWidget />}
       </body>
     </html>
   );
